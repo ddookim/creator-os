@@ -1,0 +1,564 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#111;--white:#fff;--gray1:#f7f7f5;--gray2:#ebebea;--gray3:#d4d4d0;--gray4:#9b9b97;--gray5:#6b6b67;--border:1px solid #e0e0dc;--radius:8px;--mono:ui-monospace,SFMono-Regular,monospace}
+body{background:transparent;font-family:var(--font-sans),-apple-system,sans-serif;font-size:14px;color:var(--black);line-height:1.5}
+.os-wrap{max-width:680px;margin:0 auto;padding:8px 0}
+.os-header{display:flex;align-items:center;justify-content:space-between;padding:12px 0 16px;border-bottom:1px solid var(--black)}
+.os-logo{font-size:13px;font-weight:500;letter-spacing:.05em;color:var(--black)}
+.os-logo span{color:var(--gray4)}
+.os-tabs{display:flex;gap:0;border:1px solid var(--black);border-radius:var(--radius);overflow:hidden;margin:16px 0}
+.tab-btn{flex:1;padding:8px;font-size:12px;font-weight:500;background:transparent;border:none;cursor:pointer;color:var(--gray5);transition:.15s;letter-spacing:.02em}
+.tab-btn.active{background:var(--black);color:var(--white)}
+.tab-btn:not(.active):hover{background:var(--gray2)}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Script Builder */
+.sb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.sb-block{border:1px solid var(--black);border-radius:var(--radius);padding:12px;background:var(--white)}
+.sb-block-label{font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--gray4);text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.sb-block-label .tag{background:var(--black);color:var(--white);padding:1px 6px;border-radius:3px;font-size:9px}
+.sb-block-sub{font-size:11px;color:var(--gray5);margin-bottom:8px}
+textarea.sb-input{width:100%;border:1px solid var(--gray3);border-radius:5px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:72px;background:var(--gray1);color:var(--black)}
+textarea.sb-input:focus{outline:none;border-color:var(--black)}
+.btn-row{display:flex;gap:8px;margin-bottom:12px}
+.btn{padding:7px 14px;font-size:12px;font-weight:500;border-radius:var(--radius);cursor:pointer;border:1px solid var(--black);transition:.15s;font-family:inherit}
+.btn-fill{background:var(--black);color:var(--white)}
+.btn-fill:hover{background:#333}
+.btn-outline{background:transparent;color:var(--black)}
+.btn-outline:hover{background:var(--gray1)}
+.niche-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.niche-label{font-size:12px;color:var(--gray5);white-space:nowrap}
+select.niche-sel{border:1px solid var(--gray3);border-radius:var(--radius);padding:6px 10px;font-size:13px;font-family:inherit;background:var(--white);cursor:pointer;flex:1}
+select.niche-sel:focus{outline:none;border-color:var(--black)}
+.preview-box{border:1px solid var(--black);border-radius:var(--radius);padding:12px;background:var(--gray1);margin-bottom:12px}
+.preview-box h4{font-size:11px;font-weight:500;letter-spacing:.06em;color:var(--gray5);margin-bottom:8px;text-transform:uppercase}
+.preview-script{font-size:13px;line-height:1.7;white-space:pre-wrap;color:var(--black)}
+.preview-script em{font-style:normal;background:var(--black);color:var(--white);padding:0 4px;border-radius:3px;font-size:11px;margin-right:4px}
+.char-count{font-size:11px;color:var(--gray4);text-align:right;margin-top:4px}
+
+/* Calendar */
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cal-title{font-size:15px;font-weight:500}
+.cal-meta{font-size:12px;color:var(--gray5)}
+.kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px}
+.k-day{border:1px solid var(--gray3);border-radius:6px;padding:8px 6px;min-height:72px;cursor:pointer;transition:.15s;background:var(--white);position:relative}
+.k-day:hover{border-color:var(--black)}
+.k-day.done{background:var(--black);border-color:var(--black)}
+.k-day.done .k-num{color:var(--gray4)}
+.k-day.done .k-title{color:#888}
+.k-day.has-script{border-color:var(--black)}
+.k-day.selected{box-shadow:0 0 0 2px var(--black)}
+.k-num{font-size:10px;font-weight:500;color:var(--gray4);margin-bottom:3px;letter-spacing:.04em}
+.k-title{font-size:11px;color:var(--black);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.k-dot{width:5px;height:5px;border-radius:50%;background:var(--black);position:absolute;top:6px;right:6px}
+.k-done-icon{font-size:16px;position:absolute;top:4px;right:5px;color:#fff}
+.cal-stats{display:flex;gap:16px;margin-top:8px}
+.cal-stat{font-size:12px;color:var(--gray5)}
+.cal-stat strong{color:var(--black)}
+.day-panel{border:1px solid var(--black);border-radius:var(--radius);padding:12px;background:var(--white);margin-top:10px}
+.day-panel h4{font-size:13px;font-weight:500;margin-bottom:8px}
+.day-script-text{font-size:12px;color:var(--gray5);font-style:italic}
+textarea.day-input{width:100%;border:1px solid var(--gray3);border-radius:5px;padding:8px;font-size:12px;font-family:inherit;resize:vertical;min-height:56px;background:var(--gray1)}
+textarea.day-input:focus{outline:none;border-color:var(--black)}
+
+/* Hook Bank */
+.bank-search{width:100%;border:1px solid var(--black);border-radius:var(--radius);padding:8px 12px;font-size:13px;font-family:inherit;margin-bottom:12px;background:var(--white)}
+.bank-search:focus{outline:none}
+.bank-grid{display:grid;gap:6px;max-height:420px;overflow-y:auto;padding-right:4px}
+.bank-item{border:1px solid var(--gray3);border-radius:var(--radius);padding:10px 12px;cursor:pointer;transition:.15s;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;background:var(--white)}
+.bank-item:hover{border-color:var(--black);background:var(--gray1)}
+.bank-item-text{font-size:13px;line-height:1.5;flex:1}
+.bank-item-tag{font-size:10px;color:var(--gray4);white-space:nowrap;margin-top:2px;letter-spacing:.04em}
+.copy-hint{font-size:11px;color:var(--gray4);flex-shrink:0;padding-top:2px}
+.bank-tabs{display:flex;gap:6px;margin-bottom:12px}
+.bank-tab{padding:5px 12px;font-size:12px;border:1px solid var(--gray3);border-radius:4px;cursor:pointer;font-family:inherit;background:var(--white);color:var(--gray5)}
+.bank-tab.active{background:var(--black);color:var(--white);border-color:var(--black)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--black);color:var(--white);padding:8px 18px;border-radius:20px;font-size:12px;opacity:0;transition:.3s;pointer-events:none;z-index:999}
+.toast.show{opacity:1}
+.section-divider{height:1px;background:var(--gray2);margin:16px 0}
+</style>
+
+<h2 class="sr-only">AI & Tech Faceless Creator OS — Script Builder, 30-Day Calendar, Hook Bank and Prompt Library</h2>
+
+<div class="os-wrap">
+  <div class="os-header">
+    <div class="os-logo">CREATOR OS <span>/ AI & Tech Faceless Edition</span></div>
+    <div style="font-size:11px;color:var(--gray4)" id="today-label"></div>
+  </div>
+
+  <div class="os-tabs">
+    <button class="tab-btn active" onclick="switchTab('builder')">① Script Builder</button>
+    <button class="tab-btn" onclick="switchTab('calendar')">② 30-Day Calendar</button>
+    <button class="tab-btn" onclick="switchTab('hooks')">③ Hook Bank</button>
+    <button class="tab-btn" onclick="switchTab('prompts')">④ Prompt Library</button>
+  </div>
+
+  <!-- SCRIPT BUILDER -->
+  <div class="panel active" id="panel-builder">
+    <div class="niche-row">
+      <span class="niche-label">Niche</span>
+      <select class="niche-sel" id="niche-sel">
+        <option value="ai">🤖 AI Tools</option>
+        <option value="prod">⚡ Productivity</option>
+        <option value="explainer">💡 Tech Explainers</option>
+        <option value="study">📚 Study Tips</option>
+        <option value="money">💰 Side Hustles</option>
+      </select>
+      <button class="btn btn-outline" onclick="randomScript()">Shuffle ↻</button>
+    </div>
+
+    <div class="sb-grid">
+      <div class="sb-block">
+        <div class="sb-block-label"><span class="tag">HOOK</span> 0–3초</div>
+        <div class="sb-block-sub">시청자를 멈추게 하는 첫 문장</div>
+        <textarea class="sb-input" id="s-hook" placeholder="ex) 지금 이 AI 모르면 진짜 뒤처집니다…" oninput="updatePreview()"></textarea>
+      </div>
+      <div class="sb-block">
+        <div class="sb-block-label"><span class="tag">PROBLEM</span> 3–8초</div>
+        <div class="sb-block-sub">시청자가 공감하는 문제</div>
+        <textarea class="sb-input" id="s-prob" placeholder="ex) 매일 반복되는 이메일 정리, 지겹지 않으세요?" oninput="updatePreview()"></textarea>
+      </div>
+      <div class="sb-block" style="grid-column:span 2">
+        <div class="sb-block-label"><span class="tag">VALUE</span> 8–23초</div>
+        <div class="sb-block-sub">핵심 가치 — 구체적 방법·수치·결과를 포함하세요</div>
+        <textarea class="sb-input" id="s-val" style="min-height:56px" placeholder="ex) 오늘 알려드릴 Claude 프롬프트 3가지면 이메일 초안 작성 시간을 80% 줄일 수 있습니다. 첫 번째는…" oninput="updatePreview()"></textarea>
+      </div>
+      <div class="sb-block" style="grid-column:span 2">
+        <div class="sb-block-label"><span class="tag">CTA</span> 23–28초</div>
+        <div class="sb-block-sub">구독·저장·댓글 유도</div>
+        <textarea class="sb-input" id="s-cta" placeholder="ex) 저장해두고 내일 바로 써보세요. 더 알고 싶으면 구독 누르시면 매주 올려드릴게요." oninput="updatePreview()"></textarea>
+      </div>
+    </div>
+
+    <div class="preview-box">
+      <h4>Script Preview</h4>
+      <div class="preview-script" id="preview-out">입력하면 여기에 완성 대본이 나타납니다.</div>
+      <div class="char-count" id="char-out"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-fill" onclick="saveToCalendar()">📅 캘린더에 저장</button>
+      <button class="btn btn-outline" onclick="copyScript()">복사</button>
+      <button class="btn btn-outline" onclick="clearScript()">초기화</button>
+    </div>
+
+    <div style="background:var(--gray1);border-radius:var(--radius);padding:10px 12px;font-size:12px;color:var(--gray5)">
+      <strong style="color:var(--black);font-size:11px;letter-spacing:.04em">HOOK → PROBLEM → VALUE → CTA</strong>
+      &nbsp;구조로 28초 대본을 완성하세요. Hook Bank(Curiosity·Mistake·List·Secret·Warning·Result)에서 훅을 복사해 붙여넣을 수 있습니다.
+    </div>
+  </div>
+
+  <!-- CALENDAR -->
+  <div class="panel" id="panel-calendar">
+    <div class="cal-header">
+      <div class="cal-title">30-Day Content Calendar</div>
+      <div class="cal-meta" id="cal-meta-text"></div>
+    </div>
+    <div class="kanban" id="kanban-grid"></div>
+    <div class="cal-stats">
+      <div class="cal-stat">완료 <strong id="done-count">0</strong>/30</div>
+      <div class="cal-stat">대본 저장 <strong id="script-count">0</strong>편</div>
+      <div class="cal-stat" id="streak-text"></div>
+    </div>
+    <div class="day-panel" id="day-panel" style="display:none">
+      <h4 id="day-panel-title">Day 1</h4>
+      <div id="day-script-area"></div>
+      <div class="btn-row" style="margin-top:8px">
+        <button class="btn btn-fill" onclick="saveDayNote()">저장</button>
+        <button class="btn btn-outline" onclick="markDone()">✓ 업로드 완료</button>
+        <button class="btn btn-outline" onclick="closeDay()">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOOK BANK -->
+  <div class="panel" id="panel-hooks">
+    <input class="bank-search" id="hook-search" placeholder="훅 검색... (ex: AI, 비밀, 실수)" oninput="filterHooks()">
+    <div class="bank-tabs">
+      <button class="bank-tab active" onclick="filterHookCat('all',this)">전체</button>
+      <button class="bank-tab" onclick="filterHookCat('curiosity',this)">Curiosity</button>
+      <button class="bank-tab" onclick="filterHookCat('mistake',this)">Mistake</button>
+      <button class="bank-tab" onclick="filterHookCat('list',this)">List</button>
+      <button class="bank-tab" onclick="filterHookCat('secret',this)">Secret</button>
+      <button class="bank-tab" onclick="filterHookCat('warning',this)">Warning</button>
+      <button class="bank-tab" onclick="filterHookCat('result',this)">Result</button>
+    </div>
+    <div class="bank-grid" id="hook-list"></div>
+  </div>
+
+  <!-- PROMPT LIBRARY -->
+  <div class="panel" id="panel-prompts">
+    <input class="bank-search" id="prompt-search" placeholder="프롬프트 검색... (ex: 대본, SEO, 아이디어)" oninput="filterPrompts()">
+    <div class="bank-tabs">
+      <button class="bank-tab active" onclick="filterPromptCat('all',this)">전체</button>
+      <button class="bank-tab" onclick="filterPromptCat('idea',this)">Idea Generation</button>
+      <button class="bank-tab" onclick="filterPromptCat('script',this)">Script Writing</button>
+      <button class="bank-tab" onclick="filterPromptCat('caption',this)">Caption & SEO</button>
+      <button class="bank-tab" onclick="filterPromptCat('engage',this)">Engagement</button>
+    </div>
+    <div class="bank-grid" id="prompt-list"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const HOOKS=[
+// Curiosity
+{t:"지금 이 AI 모르면 진짜 뒤처집니다.",cat:"curiosity"},
+{t:"대부분의 사람들이 모르는 ChatGPT 숨겨진 기능 5가지.",cat:"curiosity"},
+{t:"월 100만 원 버는 Faceless 채널의 비밀.",cat:"curiosity"},
+{t:"전문가들이 숨기는 Claude 프롬프트 전략.",cat:"curiosity"},
+{t:"회사에서 절대 가르쳐주지 않는 AI 자동화 루틴.",cat:"curiosity"},
+{t:"Midjourney 없이 무료로 이미지 생성하는 방법.",cat:"curiosity"},
+{t:"대부분의 사람들이 AI 프롬프트를 잘못 쓰는 이유.",cat:"curiosity"},
+{t:"AI를 쓸수록 오히려 느려지는 사람들의 공통점.",cat:"curiosity"},
+{t:"아무도 모르는 Notion 단축키 20가지.",cat:"curiosity"},
+{t:"AI 시대에 살아남는 사람들의 공통된 습관.",cat:"curiosity"},
+{t:"ChatGPT 무료 버전으로 할 수 있는 것들.",cat:"curiosity"},
+{t:"AI 글쓰기 — 티 나지 않게 쓰는 방법.",cat:"curiosity"},
+{t:"2025 최고의 무료 AI 이미지 생성 도구.",cat:"curiosity"},
+{t:"조회수보다 중요한 유튜브 지표 3가지.",cat:"curiosity"},
+{t:"이 플러그인 하나로 ChatGPT가 인터넷 검색을 합니다.",cat:"curiosity"},
+{t:"ChatGPT 유료 vs 무료 — 정말 차이 납니까?",cat:"curiosity"},
+{t:"숏폼이 아직도 돈이 되는 이유.",cat:"curiosity"},
+{t:"노션 AI 기능 — 정말 쓸만합니까?",cat:"curiosity"},
+{t:"Sora 공개 후 달라진 것들.",cat:"curiosity"},
+{t:"ChatGPT에게 물어보면 안 되는 것들.",cat:"curiosity"},
+// Mistake
+{t:"이걸 몰라서 3년을 낭비했습니다.",cat:"mistake"},
+{t:"이 실수 하나 때문에 AI 사용이 오히려 느려집니다.",cat:"mistake"},
+{t:"대부분의 사람들이 ChatGPT를 잘못 쓰는 이유.",cat:"mistake"},
+{t:"AI 사이드 허슬 — 실패한 이유와 다시 시작한 방법.",cat:"mistake"},
+{t:"제가 틱톡에서 실패한 이유.",cat:"mistake"},
+{t:"이 실수만 피해도 대본 퀄리티가 달라집니다.",cat:"mistake"},
+{t:"프롬프트를 이렇게 쓰면 ChatGPT가 틀린 답변을 합니다.",cat:"mistake"},
+{t:"Notion을 잘못 세팅하면 오히려 더 복잡해집니다.",cat:"mistake"},
+// List
+{t:"AI로 PPT 30장을 5분에 만드는 프롬프트.",cat:"list"},
+{t:"노션 하나로 100가지 업무를 자동화한 방법.",cat:"list"},
+{t:"실제로 돈이 되는 AI 부업 TOP 5.",cat:"list"},
+{t:"구독자 10만 유튜버가 쓰는 AI 툴 리스트.",cat:"list"},
+{t:"하루 30분으로 30일 치 콘텐츠 만드는 법.",cat:"list"},
+{t:"유튜브 알고리즘이 싫어하는 행동 5가지.",cat:"list"},
+{t:"AI 시대에 배워야 할 기술 1순위.",cat:"list"},
+{t:"콘텐츠 아이디어 30개를 5분 만에 뽑는 프롬프트.",cat:"list"},
+{t:"무료 AI 툴 10개 — 유료보다 낫습니다.",cat:"list"},
+{t:"이것만 알면 ChatGPT 답변 품질이 3배 올라갑니다.",cat:"list"},
+// Secret
+{t:"전문가들만 아는 Claude 프롬프트 전략.",cat:"secret"},
+{t:"Notion 공유 페이지로 수익 만드는 방법.",cat:"secret"},
+{t:"이 한 줄 프롬프트가 제 ChatGPT 사용법을 바꿨습니다.",cat:"secret"},
+{t:"회사에서 절대 안 가르쳐주는 AI 자동화 루틴.",cat:"secret"},
+{t:"ChatGPT System Prompt — 이렇게 써야 합니다.",cat:"secret"},
+{t:"5년 만에 깨달은 생산성의 진짜 비밀.",cat:"secret"},
+{t:"이 Notion 대시보드가 없었다면 채널을 포기했을 겁니다.",cat:"secret"},
+{t:"구독자 없이 수익화 가능합니까?",cat:"secret"},
+{t:"월 $300 버는 Faceless 채널의 실제 루틴.",cat:"secret"},
+{t:"이 방법으로 영어 없이 해외 수익을 만들었습니다.",cat:"secret"},
+// Warning
+{t:"AI가 내 일을 빼앗기 전에 이것부터 배우세요.",cat:"warning"},
+{t:"이 자동화 하나로 하루 2시간을 되찾았습니다.",cat:"warning"},
+{t:"이것만 피하면 채널이 죽지 않습니다.",cat:"warning"},
+{t:"유튜브 SEO — 지금 당장 바꿔야 할 것.",cat:"warning"},
+{t:"콘텐츠 크리에이터로 살아남는 법.",cat:"warning"},
+{t:"지금 당장 구독 취소해야 할 AI 구독 서비스.",cat:"warning"},
+{t:"이 실수 하면 Pinterest 알고리즘이 영상을 묻어버립니다.",cat:"warning"},
+{t:"Faceless 채널 시작 전 알아야 할 현실.",cat:"warning"},
+// Result
+{t:"AI 프롬프트 10줄로 보고서를 10분에 끝냈습니다.",cat:"result"},
+{t:"구독자 1만 명이 쓰는 Notion 템플릿 공개합니다.",cat:"result"},
+{t:"제가 AI로 월 300만 원을 버는 실제 방법.",cat:"result"},
+{t:"Faceless 채널 첫 달 수익 공개합니다.",cat:"result"},
+{t:"유튜브 쇼츠 1000만 조회수 분석 결과.",cat:"result"},
+{t:"조회수 0에서 1만 가는 데 걸린 시간.",cat:"result"},
+{t:"얼굴 없이 영상 올린 지 6개월 — 솔직한 후기.",cat:"result"},
+{t:"구독자 0에서 1000명까지 — 실제 데이터 공개.",cat:"result"},
+{t:"제가 3개월 만에 수익화에 성공한 이유.",cat:"result"},
+{t:"조회수 10만 영상 분석 — 공통점 발견.",cat:"result"},
+{t:"Claude로 20분 만에 전자책 초안 완성한 방법.",cat:"result"},
+{t:"Perplexity AI로 리서치 시간을 90% 줄인 방법.",cat:"result"},
+{t:"Runway ML — 동영상 AI 실제 결과물 공개.",cat:"result"},
+{t:"제가 매일 쓰는 AI 루틴 5분 공개.",cat:"result"},
+];
+
+const PROMPTS=[
+// Idea Generation
+{t:"내 채널 니치는 [니치]야. 이번 주 업로드할 아이디어 10개를 표 형식으로 뽑아줘. 조회수 높을 것 순으로.",cat:"idea"},
+{t:"[트렌드 키워드]를 바탕으로 Faceless AI & Tech 채널에 맞는 콘텐츠 아이디어 5개를 만들어줘. 각각 제목, 훅, 핵심 가치 포함.",cat:"idea"},
+{t:"유튜브 쇼츠 30일 콘텐츠 캘린더를 만들어줘. 주제: [주제]. 주 5편 업로드 기준으로 표 형식.",cat:"idea"},
+{t:"[영상 주제]로 만들 수 있는 시리즈 아이디어 5개를 만들어줘. 각 시리즈는 5편 이상 기획.",cat:"idea"},
+{t:"[주제]에 대한 가장 흔한 오해 3가지를 영상 아이디어로 만들어줘. 제목과 훅 포함.",cat:"idea"},
+{t:"[주제]로 한 달간 콘텐츠 시리즈를 기획해줘. Week 1~4 주제와 각 영상 핵심 메시지.",cat:"idea"},
+{t:"AI 채널 니치 포화도를 분석해줘. 2026년 기준 아직 기회가 있는 서브니치 추천.",cat:"idea"},
+{t:"내 채널에서 다음으로 만들어야 할 영상을 추천해줘. 채널 주제: [주제], 최근 업로드: [제목들].",cat:"idea"},
+{t:"[트렌딩 키워드]를 활용한 편승 콘텐츠 아이디어 5개를 만들어줘. 내 채널 니치와 연결해서.",cat:"idea"},
+{t:"[AI 툴] 사용법 튜토리얼 영상의 챕터 구성을 짜줘. 초보자 기준 5~7 챕터.",cat:"idea"},
+{t:"[주제] 영상을 위한 B-roll 아이디어 10가지를 알려줘. Faceless 채널 기준.",cat:"idea"},
+{t:"[주제]로 롱폼(10분 이상)과 숏폼(60초 이하) 영상을 동시에 기획하는 전략.",cat:"idea"},
+// Script Writing
+{t:"너는 AI 테크 유튜브 채널의 대본 작가야. [주제]에 대해 HOOK-PROBLEM-VALUE-CTA 구조로 28초 숏폼 대본을 작성해줘. 한국어, 구어체로.",cat:"script"},
+{t:"[주제]에 대한 유튜브 쇼츠 대본을 작성해줘. Hook은 숫자로 시작하고, Value는 구체적 단계 3가지로.",cat:"script"},
+{t:"[주제]에 대해 숏폼에 최적화된 Hook 문장 20개를 만들어줘. 첫 3초 안에 시청자를 멈추게 해야 해.",cat:"script"},
+{t:"내 대본 초안이야: [초안]. 더 자연스럽고 구어체로 수정해줘. 불필요한 내용은 제거하고 28초에 맞춰.",cat:"script"},
+{t:"[AI 도구 이름]을 처음 쓰는 사람에게 설명하는 5단계 튜토리얼 대본을 작성해줘.",cat:"script"},
+{t:"내 영상의 CTA를 개선해줘. 현재 CTA: [내용]. 구독·저장·댓글을 유도하는 버전 3가지.",cat:"script"},
+{t:"[주제] 영상의 인트로와 아웃트로 스크립트를 각각 작성해줘. 채널 톤: 친근하고 실용적.",cat:"script"},
+{t:"[AI 도구]를 주제로 비교 영상 대본을 작성해줘. 공정한 비교, 결론에서 추천.",cat:"script"},
+{t:"내 영상 시작 5초를 개선해줘. 현재 버전: [내용]. 더 강한 훅 3가지 버전 제안.",cat:"script"},
+{t:"내 영상 스크립트에서 AI 냄새 나는 표현을 찾아서 사람 목소리로 바꿔줘: [스크립트]",cat:"script"},
+{t:"[영상 주제]로 인스타그램 릴스, 틱톡, 유튜브 쇼츠 각각에 맞는 대본 3가지를 써줘.",cat:"script"},
+{t:"내 대본을 TTS에 최적화하도록 수정해줘. 자연스러운 억양, 쉼표 배치, 빠른 전달에 맞게: [대본]",cat:"script"},
+{t:"[제품/서비스]를 리뷰하는 Faceless 영상 대본을 작성해줘. 장단점 균형 있게.",cat:"script"},
+{t:"내 대본을 영어로 번역해줘. 자연스러운 영어 숏폼 스타일로: [대본]",cat:"script"},
+// Caption & SEO
+{t:"[경쟁 채널 제목]을 참고해서 내 채널에 맞게 리메이크한 제목 5개를 만들어줘.",cat:"caption"},
+{t:"[영상 주제]로 유튜브 SEO에 최적화된 제목 10개를 뽑아줘. 클릭률 높이는 단어 포함.",cat:"caption"},
+{t:"다음 영상 스크립트를 읽고 유튜브 설명란 글과 태그 30개를 작성해줘. SEO 최적화: [스크립트]",cat:"caption"},
+{t:"[영상 제목]에 맞는 썸네일 카피 3가지를 추천해줘. 글자 수 12자 이내, 호기심 유발.",cat:"caption"},
+{t:"[경쟁 영상 제목들]을 분석해서 조회수 높은 영상들의 공통 패턴을 알려줘.",cat:"caption"},
+{t:"[키워드]로 유튜브에서 검색할 때 상위에 뜨는 영상 제목 패턴을 분석해줘.",cat:"caption"},
+{t:"내 숏폼 영상에서 시청자가 저장하고 싶게 만드는 요소를 분석해줘. 현재 대본: [내용].",cat:"caption"},
+{t:"유튜브 쇼츠를 틱톡, 릴스에 크로스포스팅할 때 조정해야 할 것들을 알려줘.",cat:"caption"},
+// Engagement
+{t:"내 채널 구독자가 [N]명일 때 다음 단계로 성장하기 위한 전략을 알려줘. 채널 주제: [주제]",cat:"engage"},
+{t:"[니치] 채널의 커뮤니티 포스트 아이디어 5개와 실제 텍스트를 작성해줘. 참여율 높이는 질문 형식.",cat:"engage"},
+{t:"구독자가 댓글에 [내용]을 남겼어. 채널 성장에 도움이 되는 진정성 있는 답글을 작성해줘.",cat:"engage"},
+{t:"내 영상 데이터야. 시청 유지율이 낮은 구간: [구간], 평균 시청 시간: [시간]. 개선 방법을 분석해줘.",cat:"engage"},
+{t:"내 채널 포지셔닝을 도와줘. 내 니치: [니치], 경쟁 채널: [채널들]. 차별화 포인트 3가지를 제안해.",cat:"engage"},
+{t:"내 채널 [채널 설명]을 읽고 타겟 구독자 페르소나를 3가지로 만들어줘.",cat:"engage"},
+{t:"[주제]에 대한 반응이 좋은 댓글 유형을 분석해서 다음 영상 주제 추천을 해줘.",cat:"engage"},
+{t:"Faceless 채널 브랜딩을 도와줘. 채널명 아이디어 10개와 각각의 포지셔닝 설명.",cat:"engage"},
+{t:"내 채널 분석 도와줘. 잘 된 영상: [제목들], 안 된 영상: [제목들]. 패턴을 분석하고 다음 전략 제안.",cat:"engage"},
+{t:"[니치] 채널의 구독자 이탈 이유를 분석하고 콘텐츠 개선 방향 5가지를 제안해줘.",cat:"engage"},
+{t:"내 채널 수익화를 위한 단계별 로드맵을 만들어줘. 현재 구독자: [N]명.",cat:"engage"},
+{t:"내 영상의 유지율이 30%야. 개선하기 위한 편집·대본 전략 5가지.",cat:"engage"},
+{t:"Faceless 채널 운영자로서 번아웃 없이 지속하는 시스템 설계 방법을 알려줘.",cat:"engage"},
+{t:"내 채널 멤버십 아이디어를 짜줘. 채널 주제: [주제]. 혜택 3단계(Basic/Standard/Premium).",cat:"engage"},
+{t:"[주제]를 다루는 경쟁 채널들의 약점을 분석하고 내가 차별화할 수 있는 포인트를 찾아줘.",cat:"engage"},
+{t:"Faceless 채널에서 얼굴 없이 신뢰도를 높이는 방법 10가지.",cat:"engage"},
+{t:"내 채널 분석을 위한 월간 리포트 템플릿을 만들어줘. 트래킹할 핵심 지표 포함.",cat:"engage"},
+];
+
+let calData={};
+let selectedDay=null;
+let hookCat='all';
+let promptCat='all';
+
+function loadData(){
+  try{const d=localStorage.getItem('creatorOS');if(d)calData=JSON.parse(d);}catch(e){}
+}
+function saveData(){
+  try{localStorage.setItem('creatorOS',JSON.stringify(calData));}catch(e){}
+}
+
+function switchTab(id){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['builder','calendar','hooks','prompts'][i]===id);
+  });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+function updatePreview(){
+  const h=document.getElementById('s-hook').value.trim();
+  const p=document.getElementById('s-prob').value.trim();
+  const v=document.getElementById('s-val').value.trim();
+  const c=document.getElementById('s-cta').value.trim();
+  if(!h&&!p&&!v&&!c){document.getElementById('preview-out').textContent='입력하면 여기에 완성 대본이 나타납니다.';document.getElementById('char-out').textContent='';return;}
+  const parts=[];
+  if(h)parts.push('<em>HOOK</em>'+h);
+  if(p)parts.push('<em>PROBLEM</em>'+p);
+  if(v)parts.push('<em>VALUE</em>'+v);
+  if(c)parts.push('<em>CTA</em>'+c);
+  document.getElementById('preview-out').innerHTML=parts.join('\n\n');
+  const total=[h,p,v,c].join('').length;
+  document.getElementById('char-out').textContent=total+'자 · 약 '+(Math.round(total/5))+'초';
+}
+
+function clearScript(){
+  ['s-hook','s-prob','s-val','s-cta'].forEach(id=>document.getElementById(id).value='');
+  updatePreview();
+}
+
+function copyScript(){
+  const h=document.getElementById('s-hook').value.trim();
+  const p=document.getElementById('s-prob').value.trim();
+  const v=document.getElementById('s-val').value.trim();
+  const c=document.getElementById('s-cta').value.trim();
+  const text=[h&&'[HOOK] '+h,p&&'[PROBLEM] '+p,v&&'[VALUE] '+v,c&&'[CTA] '+c].filter(Boolean).join('\n\n');
+  navigator.clipboard.writeText(text).then(()=>showToast('대본 복사 완료!'));
+}
+
+function saveToCalendar(){
+  const h=document.getElementById('s-hook').value.trim();
+  const p=document.getElementById('s-prob').value.trim();
+  const v=document.getElementById('s-val').value.trim();
+  const c=document.getElementById('s-cta').value.trim();
+  if(!h){showToast('Hook을 먼저 입력해주세요');return;}
+  for(let i=1;i<=30;i++){
+    if(!calData['day'+i]||!calData['day'+i].script){
+      calData['day'+i]=calData['day'+i]||{};
+      calData['day'+i].script=[h&&'[HOOK] '+h,p&&'[PROBLEM] '+p,v&&'[VALUE] '+v,c&&'[CTA] '+c].filter(Boolean).join('\n\n');
+      calData['day'+i].title=h.substring(0,30)+'…';
+      saveData();
+      buildCalendar();
+      showToast('Day '+i+' 캘린더에 저장!');
+      return;
+    }
+  }
+  showToast('30일이 모두 채워졌습니다!');
+}
+
+const SAMPLES=['ChatGPT 숨겨진 기능 5가지','AI로 이메일 자동화','Notion 업무 시스템 공개','무료 AI 이미지 도구','Claude 프롬프트 전략','유튜브 SEO 완전 정리','AI 사이드 허슬 후기','Faceless 채널 수익 공개','생산성 앱 비교 2025','자동화 루틴 공개'];
+
+function randomScript(){
+  const niche=document.getElementById('niche-sel').value;
+  const hooks={
+    ai:['지금 이 AI 모르면 진짜 뒤처집니다.','ChatGPT가 숨겨둔 기능 — 지금 공개합니다.'],
+    prod:['Notion 하나로 모든 업무를 자동화했습니다.','하루 30분으로 한 달 업무를 정리하는 법.'],
+    explainer:['AI 자동화가 생각보다 훨씬 간단합니다.','이 개념 모르면 AI 시대에 뒤처집니다.'],
+    study:['공부 시간을 반으로 줄이는 AI 활용법.','이 AI 툴로 1시간 강의를 5분에 정리했습니다.'],
+    money:['AI로 월 100만 원 버는 실제 방법.','Faceless 채널 3개월 수익 공개합니다.']
+  };
+  const probs={
+    ai:'AI 툴이 너무 많아서 뭘 써야 할지 모르시죠?',
+    prod:'매일 같은 일을 반복하는 데 시간을 다 쓰고 있지 않나요?',
+    explainer:'AI나 자동화가 복잡하게 느껴져서 시작을 못하고 계신가요?',
+    study:'공부는 열심히 하는데 성적이 안 오르는 느낌, 있으시죠?',
+    money:'부업으로 뭘 해야 할지 막막하셨던 적 있으시죠?'
+  };
+  const vals={
+    ai:'오늘 딱 3가지 AI 툴만 알려드릴게요. 이것만 쓰셔도 업무 시간이 반으로 줄어듭니다.',
+    prod:'저는 Notion 하나로 계획·실행·복기를 한 곳에서 합니다. 30일 콘텐츠 캘린더부터 일일 루틴까지.',
+    explainer:'AI 자동화, 사실 핵심 원리는 딱 3가지입니다. 오늘 이 개념만 이해하면 나머지는 다 응용됩니다.',
+    study:'ChatGPT와 Notion을 연결하면 강의 요약, 플래시카드, 시험 예상문제가 자동으로 만들어집니다.',
+    money:'쇼츠 채널에서 Faceless로 수익화하는 가장 현실적인 방법을 알려드립니다.'
+  };
+  const ctas='마음에 드셨다면 저장해두세요. 매주 이런 정보 올려드릴게요, 구독하시면 안 놓칩니다.';
+  const h=hooks[niche];
+  document.getElementById('s-hook').value=h[Math.floor(Math.random()*h.length)];
+  document.getElementById('s-prob').value=probs[niche];
+  document.getElementById('s-val').value=vals[niche];
+  document.getElementById('s-cta').value=ctas;
+  updatePreview();
+}
+
+function buildCalendar(){
+  const grid=document.getElementById('kanban-grid');
+  grid.innerHTML='';
+  let done=0,scripts=0;
+  for(let i=1;i<=30;i++){
+    const d=calData['day'+i]||{};
+    const div=document.createElement('div');
+    div.className='k-day'+(d.done?' done':'')+(d.script?' has-script':'')+(selectedDay===i?' selected':'');
+    div.onclick=()=>openDay(i);
+    div.innerHTML=`<div class="k-num">DAY ${i}</div><div class="k-title">${d.title||'—'}</div>${d.done?'<span class="k-done-icon">✓</span>':d.script?'<span class="k-dot"></span>':''}`;
+    grid.appendChild(div);
+    if(d.done)done++;
+    if(d.script)scripts++;
+  }
+  document.getElementById('done-count').textContent=done;
+  document.getElementById('script-count').textContent=scripts;
+  const streak=calcStreak();
+  document.getElementById('streak-text').innerHTML=streak>0?`스트릭 <strong>${streak}일</strong> 🔥`:'';
+  document.getElementById('cal-meta-text').textContent=done+'/30 완료';
+}
+
+function calcStreak(){
+  let s=0;
+  for(let i=1;i<=30;i++){if(calData['day'+i]&&calData['day'+i].done)s++;else break;}
+  return s;
+}
+
+function openDay(i){
+  selectedDay=i;
+  buildCalendar();
+  const d=calData['day'+i]||{};
+  document.getElementById('day-panel').style.display='block';
+  document.getElementById('day-panel-title').textContent='Day '+i;
+  const area=document.getElementById('day-script-area');
+  area.innerHTML=`<textarea class="day-input" id="day-note" placeholder="대본 또는 메모를 입력하세요..." style="min-height:80px">${d.script||''}</textarea><input style="width:100%;border:1px solid var(--gray3);border-radius:5px;padding:6px 8px;font-size:12px;font-family:inherit;margin-top:6px;background:var(--gray1)" id="day-title-inp" placeholder="영상 제목 (캘린더에 표시)" value="${d.title||''}">`;
+}
+
+function saveDayNote(){
+  if(!selectedDay)return;
+  calData['day'+selectedDay]=calData['day'+selectedDay]||{};
+  calData['day'+selectedDay].script=document.getElementById('day-note').value;
+  calData['day'+selectedDay].title=document.getElementById('day-title-inp').value||document.getElementById('day-note').value.substring(0,30);
+  saveData();buildCalendar();showToast('Day '+selectedDay+' 저장 완료');
+}
+
+function markDone(){
+  if(!selectedDay)return;
+  calData['day'+selectedDay]=calData['day'+selectedDay]||{};
+  calData['day'+selectedDay].done=!calData['day'+selectedDay].done;
+  saveData();buildCalendar();showToast(calData['day'+selectedDay].done?'Day '+selectedDay+' 완료 ✓':'완료 취소');
+}
+
+function closeDay(){
+  selectedDay=null;
+  document.getElementById('day-panel').style.display='none';
+  buildCalendar();
+}
+
+function renderHooks(){
+  const q=document.getElementById('hook-search').value.toLowerCase();
+  const list=document.getElementById('hook-list');
+  list.innerHTML='';
+  HOOKS.filter(h=>(hookCat==='all'||h.cat===hookCat)&&(!q||h.t.toLowerCase().includes(q))).forEach(h=>{
+    const div=document.createElement('div');div.className='bank-item';
+    div.innerHTML=`<div><div class="bank-item-text">${h.t}</div><div class="bank-item-tag">#${h.cat}</div></div><span class="copy-hint">복사</span>`;
+    div.onclick=()=>{
+      navigator.clipboard.writeText(h.t).then(()=>{
+        const curHook=document.getElementById('s-hook');
+        if(!curHook.value){curHook.value=h.t;updatePreview();}
+        showToast('훅 복사 완료! Script Builder에 붙여넣으세요.');
+      });
+    };
+    list.appendChild(div);
+  });
+}
+
+function filterHooks(){renderHooks();}
+function filterHookCat(cat,el){
+  hookCat=cat;
+  document.querySelectorAll('#panel-hooks .bank-tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderHooks();
+}
+
+function renderPrompts(){
+  const q=document.getElementById('prompt-search').value.toLowerCase();
+  const list=document.getElementById('prompt-list');
+  list.innerHTML='';
+  PROMPTS.filter(p=>(promptCat==='all'||p.cat===promptCat)&&(!q||p.t.toLowerCase().includes(q))).forEach(p=>{
+    const div=document.createElement('div');div.className='bank-item';
+    div.innerHTML=`<div><div class="bank-item-text">${p.t}</div><div class="bank-item-tag">#${p.cat}</div></div><span class="copy-hint">복사</span>`;
+    div.onclick=()=>{navigator.clipboard.writeText(p.t).then(()=>showToast('프롬프트 복사 완료!'));};
+    list.appendChild(div);
+  });
+}
+
+function filterPrompts(){renderPrompts();}
+function filterPromptCat(cat,el){
+  promptCat=cat;
+  document.querySelectorAll('#panel-prompts .bank-tab').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderPrompts();
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+document.getElementById('today-label').textContent=new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+loadData();
+buildCalendar();
+renderHooks();
+renderPrompts();
+</script>
